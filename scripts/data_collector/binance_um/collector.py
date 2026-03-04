@@ -42,6 +42,7 @@ DEFAULT_INST_PREFIX = "binance_um."
 BINANCE_REST_INTERVAL_MAP = {
     "1min": "1m",
     "60min": "1h",
+    "4h": "4h",
     "1d": "1d",
 }
 
@@ -56,6 +57,7 @@ BINANCE_VISION_INTERVAL_MAP = {
 QLIB_FREQ_MAP = {
     "1min": "1min",
     "60min": "60min",
+    "4h": "240min",
     "1d": "day",
 }
 
@@ -333,6 +335,8 @@ class BinanceUMCollector(BaseCollector):
             return last_dt + pd.Timedelta(minutes=1)
         if self.interval == self.INTERVAL_60min:
             return last_dt + pd.Timedelta(hours=1)
+        if self.interval == "4h":
+            return last_dt + pd.Timedelta(hours=4)
         if self.interval == self.INTERVAL_1d:
             return last_dt + pd.Timedelta(days=1)
         return None
@@ -355,6 +359,8 @@ class BinanceUMCollector(BaseCollector):
             step_ms = 60_000
         elif interval == "60min":
             step_ms = 3_600_000
+        elif interval == "4h":
+            step_ms = 14_400_000
         else:
             step_ms = 86_400_000
 
@@ -430,6 +436,10 @@ class BinanceUMCollector60min(BinanceUMCollector):
 
 
 class BinanceUMCollector1d(BinanceUMCollector):
+    pass
+
+
+class BinanceUMCollector4h(BinanceUMCollector):
     pass
 
 
@@ -663,6 +673,10 @@ class BinanceUMNormalize1d(BinanceUMNormalize):
         return data
 
 
+class BinanceUMNormalize4h(BinanceUMNormalize1min):
+    FREQ = "4h"
+
+
 class Run(BaseRun):
     """
     Qlib-style runner (fire CLI) for Binance UM perpetual futures.
@@ -708,8 +722,8 @@ class Run(BaseRun):
             python collector.py download_data --source_dir ~/.qlib/binance_um/source_60min --interval 60min --start 2024-01-01 --end 2024-06-01
             python collector.py download_data --source_dir ~/.qlib/binance_um/source_1d --interval 1d --start 2024-01-01 --end 2024-06-01
         """
-        if self.interval not in ("1min", "60min", "1d"):
-            raise ValueError("Binance UM collector supports only 1min, 60min and 1d")
+        if self.interval not in ("1min", "60min", "4h", "1d"):
+            raise ValueError("Binance UM collector supports only 1min, 60min, 4h and 1d")
         return super().download_data(
             max_collector_count=max_collector_count,
             delay=delay,
