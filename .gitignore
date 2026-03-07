@@ -22,6 +22,7 @@ dist/
 qlib/VERSION.txt
 qlib/data/_libs/expanding.cpp
 qlib/data/_libs/rolling.cpp
+qlib/_version.py
 examples/estimator/estimator_example/
 examples/rl/data/
 examples/rl/checkpoints/
@@ -50,3 +51,19 @@ tags
 ./pretrain
 .idea/
 .aider*
+
+# macOS
+.DS_Store
+
+# Backtest reports & generated outputs
+*.html
+examples/fmz_alpha101/*_report.html
+examples/fmz_alpha101/*_account.csv
+examples/fmz_alpha101/*_positions.csv
+examples/fmz_alpha101/qlib_factors.csv
+
+# Debug / temporary scripts
+scripts/debug_*
+scripts/fix_*
+scripts/verify_*
+scripts/debug_output/

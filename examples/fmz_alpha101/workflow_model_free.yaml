@@ -1,0 +1,46 @@
+# FMZ Alpha101 Model-Free Backtest Configuration
+# Uses Alpha101FMZComposite signal directly (no ML model training)
+
+qlib_init:
+  provider_uri: "~/.qlib/qlib_data/crypto_data_perp_4h"
+  region: crypto
+
+data_handler_config: &handler_config
+  start_time: "2022-01-01"
+  end_time: "2025-12-31"
+  fit_start_time: "2022-01-01"
+  fit_end_time: "2024-06-30"
+  instruments: all
+  freq: "240min"
+  factor_weights:
+    alpha044: 0.20
+    alpha033: 0.15
+    alpha017: 0.15
+    alpha026: 0.12
+    alpha055: 0.12
+    alpha002: 0.10
+    alpha039: 0.10
+    alpha003: 0.06
+  negate_composite: true  # FMZ long=bottom → qlib buy=top, so negate
+
+backtest:
+  start_time: "2024-07-01"
+  end_time: "2025-12-31"
+  account: 10000
+  benchmark: "BTCUSDT"
+
+strategy:
+  topk_long: 40
+  topk_short: 40
+  n_drop_long: 40    # 全量换仓 (full rotation each bar)
+  n_drop_short: 40
+  hold_thresh: 1
+  rebalance_to_weights: false
+
+exchange:
+  freq: "240min"
+  limit_threshold: 0.0
+  deal_price: close
+  open_cost: 0.0002   # 0.02%
+  close_cost: 0.0002
+  min_cost: 0

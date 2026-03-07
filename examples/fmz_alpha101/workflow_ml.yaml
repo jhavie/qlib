@@ -1,0 +1,107 @@
+# FMZ Alpha101 ML-Enhanced Backtest Configuration
+# Compatible with: qrun examples/fmz_alpha101/workflow_ml.yaml
+#
+# Uses Alpha101FMZ 8-factor features as LightGBM input,
+# LongShortTopKStrategy + ShortableExecutor for crypto long-short backtest.
+
+qlib_init:
+  provider_uri: "~/.qlib/qlib_data/crypto_data_perp_4h"
+  region: crypto
+
+market: &market all
+benchmark: &benchmark BTCUSDT
+
+data_handler_config: &data_handler_config
+  start_time: "2022-01-01"
+  end_time: "2025-12-31"
+  fit_start_time: "2022-01-01"
+  fit_end_time: "2023-12-31"
+  instruments: *market
+  freq: "240min"
+  factor_weights:
+    alpha044: 0.20
+    alpha033: 0.15
+    alpha017: 0.15
+    alpha026: 0.12
+    alpha055: 0.12
+    alpha002: 0.10
+    alpha039: 0.10
+    alpha003: 0.06
+
+port_analysis_config: &port_analysis_config
+  executor:
+    class: ShortableExecutor
+    module_path: qlib.backtest.shortable_backtest
+    kwargs:
+      time_per_step: "240min"
+      generate_portfolio_metrics: true
+  strategy:
+    class: LongShortTopKStrategy
+    module_path: qlib.contrib.strategy.signal_strategy
+    kwargs:
+      signal: <PRED>
+      topk_long: 40
+      topk_short: 40
+      n_drop_long: 10
+      n_drop_short: 10
+      hold_thresh: 3
+      only_tradable: true
+      forbid_all_trade_at_limit: false
+      rebalance_to_weights: true
+  backtest:
+    start_time: "2024-07-01"
+    end_time: "2025-12-31"
+    account: 10000
+    benchmark: *benchmark
+    exchange_kwargs:
+      exchange:
+        class: ShortableExchange
+        module_path: qlib.backtest.shortable_exchange
+      freq: "240min"
+      limit_threshold: 0.0
+      deal_price: close
+      open_cost: 0.0002
+      close_cost: 0.0002
+      min_cost: 0
+
+task:
+  model:
+    class: LGBModel
+    module_path: qlib.contrib.model.gbdt
+    kwargs:
+      loss: mse
+      colsample_bytree: 0.8879
+      learning_rate: 0.0421
+      subsample: 0.8789
+      lambda_l1: 205.6999
+      lambda_l2: 580.9768
+      max_depth: 8
+      num_leaves: 210
+      num_threads: 20
+  dataset:
+    class: DatasetH
+    module_path: qlib.data.dataset
+    kwargs:
+      handler:
+        class: Alpha101FMZHandler
+        module_path: qlib.contrib.data.handler_alpha101_fmz
+        kwargs: *data_handler_config
+      segments:
+        train: ["2022-01-01", "2023-12-31"]
+        valid: ["2024-01-01", "2024-06-30"]
+        test: ["2024-07-01", "2025-12-31"]
+  record:
+    - class: SignalRecord
+      module_path: qlib.workflow.record_temp
+      kwargs:
+        model: <MODEL>
+        dataset: <DATASET>
+    - class: SigAnaRecord
+      module_path: qlib.workflow.record_temp
+      kwargs:
+        ana_long_short: true
+        ann_scaler: 2190   # 365 days * 6 bars/day for 4h crypto
+    - class: PortAnaRecord
+      module_path: qlib.workflow.record_temp
+      kwargs:
+        config: *port_analysis_config
