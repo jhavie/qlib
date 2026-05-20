@@ -1,0 +1,152 @@
+# FMZ Alpha101 数据采集配置
+# 125 Binance USDS-M 永续合约, 4h K线, 2022-01-01 ~ 2025-12-31
+
+data_collection:
+  interval: "4h"
+  start: "2025-01-01"
+  end: "2025-03-31"
+  delay: 0.3
+
+  # 输出目录
+  source_dir: "~/.qlib/binance_um/source_12coins_4h"
+  normalize_dir: "~/.qlib/binance_um/normalize_12coins_4h"
+  qlib_dir: "~/.qlib/qlib_data/crypto_data_perp_12coins_4h"
+
+  # 123 符号列表（与 backtest.yaml strategy section 对齐）
+  symbols:
+    - AAVEUSDT
+    - ADAUSDT
+    - BNBUSDT
+    - BTCUSDT
+    - DOGEUSDT
+    - ETHUSDT
+    - LINKUSDT
+    - OPUSDT
+    - SOLUSDT
+    - UNIUSDT
+    - ARBUSDT
+    - SUIUSDT
+
+    # - 1000SHIBUSDT
+    # - 1000XECUSDT
+    # - 1INCHUSDT
+    # - AAVEUSDT
+    # - ADAUSDT
+    # - ALGOUSDT
+    # - ALICEUSDT
+    # - ALPHAUSDT
+    # - ANKRUSDT
+    # - ANTUSDT
+    # - ARPAUSDT
+    # - ARUSDT
+    # - ATAUSDT
+    # - ATOMUSDT
+    # - AUDIOUSDT
+    # - AVAXUSDT
+    # - AXSUSDT
+    # - BAKEUSDT
+    # - BALUSDT
+    # - BANDUSDT
+    # - BATUSDT
+    # - BCHUSDT
+    # - BELUSDT
+    # - BLZUSDT
+    # - BNBUSDT
+    # - BTCUSDT
+    # - BTSUSDT
+    # - C98USDT
+    # - CELOUSDT
+    # - CELRUSDT
+    # - CHRUSDT
+    # - CHZUSDT
+    # - COMPUSDT
+    # - COTIUSDT
+    # - CRVUSDT
+    # - CTSIUSDT
+    # - DASHUSDT
+    # - DEFIUSDT
+    # - DENTUSDT
+    # - DGBUSDT
+    # - DOGEUSDT
+    # - DOTUSDT
+    # - DUSKUSDT
+    # - DYDXUSDT
+    # - EGLDUSDT
+    # - ENJUSDT
+    # - ENSUSDT
+    # - EOSUSDT
+    # - ETCUSDT
+    # - ETHUSDT
+    # - FILUSDT
+    # - FLMUSDT
+    # - FTMUSDT
+    # - GALAUSDT
+    # - GRTUSDT
+    # - GTCUSDT
+    # - HBARUSDT
+    # - HNTUSDT
+    # - HOTUSDT
+    # - ICXUSDT
+    # - IOSTUSDT
+    # - IOTAUSDT
+    # - IOTXUSDT
+    # - KAVAUSDT
+    # - KLAYUSDT
+    # - KNCUSDT
+    # - KSMUSDT
+    # - LINAUSDT
+    # - LINKUSDT
+    # - LPTUSDT
+    # - LRCUSDT
+    # - LTCUSDT
+    # - MANAUSDT
+    # - MASKUSDT
+    # - MATICUSDT
+    # - MKRUSDT
+    # - MTLUSDT
+    # - NEARUSDT
+    # - NEOUSDT
+    # - NKNUSDT
+    # - OCEANUSDT
+    # - OGNUSDT
+    # - OMGUSDT
+    # - ONEUSDT
+    # - ONTUSDT
+    # - PEOPLEUSDT
+    # - QTUMUSDT
+    # - RAYUSDT
+    # - REEFUSDT
+    # - RENUSDT
+    # - RLCUSDT
+    # - ROSEUSDT
+    # - RSRUSDT
+    # - RUNEUSDT
+    # - RVNUSDT
+    # - SANDUSDT
+    # - SCUSDT
+    # - SFPUSDT
+    # - SKLUSDT
+    # - SNXUSDT
+    # - SOLUSDT
+    # - SRMUSDT
+    # - STMXUSDT
+    # - STORJUSDT
+    # - SUSHIUSDT
+    # - SXPUSDT
+    # - THETAUSDT
+    # - TOMOUSDT
+    # - TRBUSDT
+    # - TRXUSDT
+    # - UNIUSDT
+    # - VETUSDT
+    # - WAVESUSDT
+    # - XEMUSDT
+    # - XLMUSDT
+    # - XMRUSDT
+    # - XRPUSDT
+    # - XTZUSDT
+    # - YFIUSDT
+    # - ZECUSDT
+    # - ZENUSDT
+    # - ZILUSDT
+    # - ZRXUSDT

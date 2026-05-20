@@ -1,0 +1,38 @@
+# FMZ Volume Single-Factor Backtest Configuration
+# Reproduces FMZ notebook results: 123 symbols, 4h, N=40, value=300, fee=0.02%
+
+qlib_init:
+  provider_uri: "~/.qlib/qlib_data/crypto_data_perp_4h"
+  region: crypto
+
+data_handler_config:
+  class: VolumeFMZHandler
+  module_path: qlib.contrib.data.handler_volume_fmz
+  start_time: "2022-01-01"
+  end_time: "2022-12-31"
+  fit_start_time: "2022-01-01"
+  fit_end_time: "2022-12-31"
+  instruments: all
+  freq: "240min"
+  negate_composite: true
+
+backtest:
+  start_time: "2022-01-01"
+  end_time: "2022-12-31"
+  account: 10000
+  benchmark: "BINANCE_UM.BTCUSDT"
+
+strategy:
+  class: FMZNeutralStrategy
+  module_path: qlib.contrib.strategy.fmz_neutral_strategy
+  topk_long: 40
+  topk_short: 40
+  value_per_position: 300
+
+exchange:
+  freq: "240min"
+  limit_threshold: 0.0
+  deal_price: open
+  open_cost: 0.0002
+  close_cost: 0.0002
+  min_cost: 0
